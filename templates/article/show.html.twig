@@ -31,6 +31,10 @@
                 <th>IsPublished</th>
                 <td>{{ article.isPublished ? 'Yes' : 'No' }}</td>
             </tr>
+              <th>Authors</th>
+                <td>  {% for author in article.authors %}
+                {{ author.firstName}} {{ author.lastName }}<br />
+                {% endfor %}</td>
             <tr>
                 <th>Image</th>
                 <td>{{ article.image }}</td>

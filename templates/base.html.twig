@@ -16,19 +16,24 @@
     <body>
         <header>
             <nav>
-                <a href="{{ path('app_home') }}">Home</a>
-                {# <a href="{{ path('app_products') }}">Produits</a>
+                <a href="{{ path('app_home') }}">Accueil</a>
+                <a href="{{ path('app_products') }}">Produits</a>
                 {% if app.user %}
+                    <a href="{{ path('app_article_index') }}">Article</a>
+                    <a href="#">Panier</a>
+                    <a href="#">Gestion</a>
                     <a href="{{ path('app_user_show', {'id': app.user.id}) }}">Profil</a>
                     <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    {# <a href="{{ path('app_logout') }}">Déconnexion</a>
                     <a href="{{ path('app_product_index') }}">Produits</a>
-                    <a href="{{ path('app_category_index') }}">Catégories</a>
+                    <a href="{{ path('app_category_index') }}">Catégories</a> #}
                 {% else %}
                     <a href="{{ path('app_login') }}">Se Connecter</a>
+                    <a href="{{ path('app_register') }}">S'inscrire</a>
                 {% endif %}
-                {% if is_granted("ROLE_ADMIN") %}
-                    <a href="{{ path('app_admin') }}">Admin</a>
-                {% endif %} #}
+                {# {% if is_granted("ROLE_ADMIN") %}
+                    <a href="{{ path('app_admin') }}">Admin</a> #}
+                {# {% endif %} #}
             </nav>
         </header>
         {% block body %}{% endblock %}
