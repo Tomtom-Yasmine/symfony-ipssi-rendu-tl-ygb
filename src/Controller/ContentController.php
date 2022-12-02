@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\AddToCartType;
 use App\Repository\ProductRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,10 +26,18 @@ class ContentController extends AbstractController
     public function indexProducts(ProductRepository $productRepository): Response {
         $products = $productRepository->findAllAvailable();
 
-        return $this->render('content/products.html.twig', [
+        $view_data = [
             'products' => $products,
-        ]);
+        ];
+
+        $user = $this->getUser();
+        if ($user) {
+            $view_data['addToCartForm'] = $this->createForm(AddToCartType::class, $user);
+        }
+
+        return $this->render('content/products.html.twig', $view_data);
     }
+    
     //Article
     #[Route('/article', name: 'app_article')]
     public function indexArticles(ArticleRepository $articleRepository): Response {
