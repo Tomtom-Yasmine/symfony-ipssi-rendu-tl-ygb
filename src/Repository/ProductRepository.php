@@ -39,6 +39,18 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllAvailable($limit = null) {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.isPublished = :isPublished')
+            ->setParameter('isPublished', true)
+            ->andWhere('p.availableQuantity > :availableQuantity')
+            ->setParameter('availableQuantity', 0)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
