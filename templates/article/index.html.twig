@@ -14,6 +14,7 @@
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>IsPublished</th>
+                <th>Authors</th>
                 <th>Image</th>
                 <th>actions</th>
             </tr>
@@ -27,6 +28,11 @@
                 <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ article.isPublished ? 'Yes' : 'No' }}</td>
+                <td>
+                {% for author in article.authors %}
+                {{ author.firstName}} {{ author.lastName }}<br />
+                {% endfor %}
+                </td>
                 <td>{{ article.image }}</td>
                 <td>
                     <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
