@@ -29,8 +29,15 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userRoles = [];
+            if ($form->get('isSeller')->getData()) {
+                array_push($userRoles, 'ROLE_SELLER');
+            }
+            if ($form->get('isAdmin')->getData()) {
+                array_push($userRoles, 'ROLE_ADMIN');
+            }
+           $user->setRoles($userRoles);
             $userRepository->save($user, true);
-
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -55,6 +62,30 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userRoles = $user->getRoles();
+            $isSeller= $form->get('isSeller')->getData();
+            $isAdmin= $form->get('isAdmin')->getData();
+
+            if ($isSeller && !in_array('ROLE_SELLER', $userRoles)) {
+                array_push($userRoles, 'ROLE_SELLER');
+            } 
+            elseif (!$isSeller && in_array('ROLE_SELLER', $userRoles)) {
+                if (($key = array_search('ROLE_SELLER', $userRoles)) !== false) {
+                    unset($userRoles[$key]);
+                }
+            }
+
+            if ($isAdmin && !in_array('ROLE_ADMIN', $userRoles)) {
+                array_push($userRoles, 'ROLE_ADMIN');
+            } 
+            elseif (!$isAdmin && in_array('ROLE_ADMIN', $userRoles)) {
+                if (($key = array_search('ROLE_ADMIN', $userRoles)) !== false) {
+                    unset($userRoles[$key]);
+                }
+            }
+            
+            $user->setRoles($userRoles);
+            
             $userRepository->save($user, true);
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
