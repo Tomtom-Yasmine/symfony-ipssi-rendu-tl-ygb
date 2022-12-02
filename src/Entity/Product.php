@@ -33,6 +33,22 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?User $seller = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column]
+    private ?bool $isPublished = null;
+
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private array $images = [];
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +122,66 @@ class Product
     public function setSeller(?User $seller): self
     {
         $this->seller = $seller;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function isIsPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): self
+    {
+        $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    public function setImages(?array $images): self
+    {
+        $this->images = $images;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
