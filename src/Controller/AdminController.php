@@ -24,7 +24,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user/new', name: 'app_admin_user_new', methods: ['GET', 'POST'])]
-    public function newUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher,): Response
+    public function newUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -54,4 +54,41 @@ class AdminController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    // #[Route('/edit/{id}', name: 'app_profile_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    // {
+    //     $currentUser = $this->getUser();
+    //     $userRoles = $currentUser->getRoles();
+
+    //     if (in_array("ROLE_ADMIN", $userRoles)) {
+    //         $this->redirectToRoute('app_profile_edit', ['id' => $user->getId()], Response::HTTP_PERMANENTLY_REDIRECT);
+    //     }
+
+    //     $form = $this->createForm(ProfileType::class, $user);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $isSeller = $form->get('isSeller')->getData();
+
+    //         if ($isSeller && !in_array('ROLE_SELLER', $userRoles)) {
+    //             array_push($userRoles, 'ROLE_SELLER');
+    //         } elseif (!$isSeller && in_array('ROLE_SELLER', $userRoles)) {
+    //             if (($key = array_search('ROLE_SELLER', $userRoles)) !== false) {
+    //                 unset($userRoles[$key]);
+    //             }
+    //         }
+
+    //         $user->setRoles($userRoles);
+
+    //         $userRepository->save($currentUser, true);
+
+    //         return $this->redirectToRoute('app_profile_show', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('profile/edit.html.twig', [
+    //         'user' => $currentUser,
+    //         'form' => $form,
+    //     ]);
+    // }
 }
