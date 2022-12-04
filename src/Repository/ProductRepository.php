@@ -46,6 +46,7 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('isPublished', true)
             ->andWhere('p.availableQuantity > :availableQuantity')
             ->setParameter('availableQuantity', 0)
+            ->orderBy('p.createdAt', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
