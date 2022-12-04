@@ -29,7 +29,7 @@ class ProfileController extends AbstractController
         $userRoles = $user->getRoles();
 
         if (in_array("ROLE_ADMIN", $userRoles)) {
-            $this->redirectToRoute('app_admin_user_edit', ['id' => $user->getId()], Response::HTTP_PERMANENTLY_REDIRECT);
+            $this->redirectToRoute('app_profile_edit', ['id' => $user->getId()], Response::HTTP_PERMANENTLY_REDIRECT);
         }
 
         $form = $this->createForm(ProfileType::class, $user);
