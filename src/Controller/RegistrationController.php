@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
@@ -25,14 +26,19 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
+            $user
+                ->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
                 )
-            )
-            ->setFirstName($form->get('firstName')->getData())
-            ->setLastName($form->get('lastName')->getData());
+                ->setFirstName($form->get('firstName')->getData())
+                ->setLastName($form->get('lastName')->getData());
+            
+            $cart = new Cart();
+            $cart->setOwner($user);
+            $entityManager->persist($cart);
 
             $entityManager->persist($user);
             $entityManager->flush();
