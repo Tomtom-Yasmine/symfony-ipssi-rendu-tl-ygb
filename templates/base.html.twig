@@ -21,10 +21,10 @@
 		<header>
 			<nav>
 				<a href="{{ path('app_home') }}">Accueil</a>
-				<a href="{{ path('app_products') }}">Produits</a>
+				<a href="{{ path('app_product_index') }}">Produits</a>
 				{% if app.user %}
 					<a href="{{ path('app_article_index') }}">Article</a>
-					<a href="#">Panier</a>
+					<a href="{{ path('app_cart_show') }}">Panier</a>
 					{% if is_granted("ROLE_ADMIN") %}
 						<a href="{{ path('app_admin_user_index') }}">Admin</a>
 					{% endif %}
