@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
-class UserType extends AbstractType
+class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -16,19 +16,12 @@ class UserType extends AbstractType
             ->add('email')
             ->add('firstName')
             ->add('lastName')
-            ->add('password')
             ->add('isSeller', CheckboxType::class, [
                 'label'    => 'Vendeur',
                 'required' => false,
                 'mapped' => false,
                 'data' => in_array("ROLE_SELLER", $builder->getData()->getRoles()),
-            ])
-            ->add('isAdmin', CheckboxType::class, [
-                'label'    => 'Admin',
-                'required' => false,
-                'mapped' => false,
-                'data' => in_array("ROLE_ADMIN", $builder->getData()->getRoles()),
-            ]);;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
