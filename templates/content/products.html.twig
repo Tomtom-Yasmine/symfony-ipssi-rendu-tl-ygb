@@ -13,24 +13,24 @@
             <ul class="list-group shadow">
                 {% for product in products %}
                     <li class="list-group-item">
-                        <div role="button" tabindex="0" class="media align-items-lg-center flex-column flex-lg-row p-3" onclick="window.location.replace('{{ path('app_product_show', {id: product.id})|escape('js') }}');">
+                        <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                             <div class="media-body order-2 order-lg-1">
                                 <p class="mb-0 small">
                                     <a href="{# path('app_category', {id: product.category.id}) #}">{{ product.category.name }}</a>
                                 </p>
-                                <h5 class="mt-0 font-weight-bold mb-2">{{ product.title }}</h5>
+                                <h5 class="mt-0 font-weight-bold mb-2"><a href="path('app_product_show', {id: product.id})">{{ product.title }}</a></h5>
                                 <p class="font-italic text-muted mb-0 small">{{ product.colors|join(' | ') }}</p>
                                 <div class="d-flex align-items-center justify-content-between mt-1">
                                     <h6 class="font-weight-bold my-2">{{ product.price|format_currency('EUR') }}</h6>
-                                    {% if addToCartForm is defined %}
-                                        {{ form_start(addToCartForm) }}
-                                        {# staticly pass product id into form #}
-                                        {{ form_widget(addToCartForm.product, {'value': product.id}) }}
+                                    {% if product.addToCartForm is defined %}
+                                        {{ form_start(product.addToCartForm) }}
+                                        {{ form_widget(product.addToCartForm.color) }}
+                                        {{ form_widget(product.addToCartForm.quantity) }}
                                         <button type="submit" class="btn btn-primary btn-sm">
                                             <i class="fas fa-shopping-cart"></i>
                                             Ajouter au panier
                                         </button>
-                                        {{ form_end(addToCartForm) }}
+                                        {{ form_end(product.addToCartForm) }}
                                     {% endif %}
                                 </div>
                             </div><img src="" alt="Image du produit" width="200" class="ml-lg-5 order-1 order-lg-2">
