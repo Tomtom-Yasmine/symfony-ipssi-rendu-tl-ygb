@@ -26,16 +26,22 @@ class ContentController extends AbstractController
     public function indexProducts(ProductRepository $productRepository): Response {
         $products = $productRepository->findAllAvailable();
 
-        $view_data = [
-            'products' => $products,
-        ];
-
         $user = $this->getUser();
         if ($user) {
-            $view_data['addToCartForm'] = $this->createForm(AddToCartType::class, $user);
+            foreach ($products as $product) {
+                $form = $this->createForm(AddToCartType::class, null, [
+                    'action' => $this->generateUrl('app_cart_add'),
+                    'method' => 'POST',
+                    'product' => $product,
+                ]);
+                $form->get('product_id')->setData($product->getId());
+                $product->addToCartForm = $form->createView();
+            }
         }
 
-        return $this->render('content/products.html.twig', $view_data);
+        return $this->render('content/products.html.twig', [
+            'products' => $products
+        ]);
     }
     
     //Article
