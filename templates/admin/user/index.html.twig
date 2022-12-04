@@ -28,8 +28,9 @@
 					<td>{{ user.firstName }}</td>
 					<td>{{ user.lastName }}</td>
 					<td>
-						<a href="{{ path('app_profile_show', {'id': user.id}) }}">show</a>
-						<a href="{{ path('app_profile_edit', {'id': user.id}) }}">edit</a>
+						<a href="{{ path('app_profile_show', {'id': user.id}) }}"><button class="btn btn-primary">Show</button> </a>
+						<a href="{{ path('app_profile_edit', {'id': user.id}) }}"><button class="btn btn-warning">Edit</button> </a>
+						<a href="{{ path('app_profile_edit_password', {'id': user.id}) }}"><button class="btn btn-secondary">Edit password</button> </a>
 					</td>
 				</tr>
 			{% else %}

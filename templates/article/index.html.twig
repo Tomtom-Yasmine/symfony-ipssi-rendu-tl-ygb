@@ -35,8 +35,8 @@
                 </td>
                 <td>{{ article.image }}</td>
                 <td>
-                    <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
-                    <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
+                    <button class="btn btn-primary"><a href="{{ path('app_article_show', {'id': article.id}) }}" class="text-light text-decoration-none">show</a></button>
+                     <button class="btn btn-warning"><a href="{{ path('app_article_edit', {'id': article.id}) }}"  class="text-light text-decoration-none">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -47,5 +47,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_article_new') }}">Create new</a>
+    <button class="btn btn-primary"><a href="{{ path('app_article_new') }}"  class="text-light text-decoration-none">Create new</a></button>
 {% endblock %}
