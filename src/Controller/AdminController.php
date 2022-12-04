@@ -42,7 +42,7 @@ class AdminController extends AbstractController
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
             $userRepository->save($user, true);
@@ -54,43 +54,4 @@ class AdminController extends AbstractController
             'form' => $form,
         ]);
     }
-
-    // #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    // public function edit(Request $request, User $user, UserRepository $userRepository): Response
-    // {
-    //     $form = $this->createForm(UserType::class, $user);
-    //     $form->handleRequest($request);
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $userRoles = $user->getRoles();
-    //         $isSeller = $form->get('isSeller')->getData();
-    //         $isAdmin = $form->get('isAdmin')->getData();
-
-    //         if ($isSeller && !in_array('ROLE_SELLER', $userRoles)) {
-    //             array_push($userRoles, 'ROLE_SELLER');
-    //         } elseif (!$isSeller && in_array('ROLE_SELLER', $userRoles)) {
-    //             if (($key = array_search('ROLE_SELLER', $userRoles)) !== false) {
-    //                 unset($userRoles[$key]);
-    //             }
-    //         }
-
-    //         $currentUser = $this->getUser()->getRoles();
-    //         // dd($currentUser)
-
-    //         if ($isAdmin && !in_array('ROLE_ADMIN', $userRoles)) {
-    //             array_push($userRoles, 'ROLE_ADMIN');
-    //         } elseif (!$isAdmin && in_array('ROLE_ADMIN', $userRoles)) {
-    //             if (($key = array_search('ROLE_ADMIN', $userRoles)) !== false) {
-    //                 unset($userRoles[$key]);
-    //             }
-    //         }
-
-    //         $user->setRoles($userRoles);
-
-    //         $userRepository->save($user, true);
-
-    //         return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
-    //     }
-
-
 }

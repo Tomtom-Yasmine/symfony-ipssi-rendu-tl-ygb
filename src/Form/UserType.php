@@ -16,6 +16,7 @@ class UserType extends AbstractType
             ->add('email')
             ->add('firstName')
             ->add('lastName')
+            ->add('password')
             ->add('isSeller', CheckboxType::class, [
                 'label'    => 'Vendeur',
                 'required' => false,
