@@ -1,4 +1,6 @@
 # SYMFONY IPSSI
+## Important
+Le mot de passe de tous les utilisateurs est : `123456`
 
 ## Requirements
 
