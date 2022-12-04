@@ -18,8 +18,10 @@ class ContentController extends AbstractController
 {
     // Index
     #[Route('', name: 'app_home', methods: ['GET'])]
-    public function index(): Response {
-        return $this->render('home/index.html.twig');
+    public function index(ArticleRepository $articleRepository): Response {
+        return $this->render('home/index.html.twig', [
+            'articles' => $articleRepository->findBy([], ['createdAt' => 'DESC'], 3),
+        ]);
     }
 
     // Products
