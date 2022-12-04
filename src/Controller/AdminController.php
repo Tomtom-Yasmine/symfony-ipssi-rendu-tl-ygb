@@ -4,17 +4,69 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\ArticleFilterType;
+use App\Form\ProductFilterType;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use App\Repository\ArticleRepository;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/admin')]
 
 class AdminController extends AbstractController
 {
+    #[Route('', name: 'app_admin')]
+    public function index(Request $request, ArticleRepository $articleRepository, ProductRepository $productRepository): Response
+    {
+        /*         $roleChecker = $this->container->get('security.authorization_checker');
+        if ($roleChecker->isGranted('ROLE_ADMIN') && !$roleChecker->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_home');
+        } */
+        $articlesCount = count($articleRepository->findAll());
+        $productsCount = count($productRepository->findAll());
+
+        $articleForm = $this->createForm(ArticleFilterType::class);
+        $articleForm->handleRequest($request);
+
+        if ($articleForm->isSubmitted() && $articleForm->isValid()) {
+            $limit = $articleForm->get('limit')->getData();
+            $author = $articleForm->get('author')->getData();
+            $authorId = $author->getId();
+
+            return $this->redirectToRoute('app_admin_articles', [
+                "limit" => $limit,
+                "author" => $authorId
+            ]);
+        }
+
+        $productForm = $this->createForm(ProductFilterType::class);
+        $productForm->handleRequest($request);
+
+        if ($productForm->isSubmitted() && $productForm->isValid()) {
+            $limit = $productForm->get('limit')->getData();
+            $seller = $productForm->get('seller')->getData();
+            $category = $productForm->get('category')->getData();
+            $sellerId = $seller->getId();
+            $categoryId = $category->getId();
+
+            return $this->redirectToRoute('app_admin_products', [
+                "limit" => $limit,
+                "seller" => $sellerId,
+                "category" => $categoryId
+            ]);
+        }
+
+        return $this->renderForm('admin/index.html.twig', [
+            "articlesCount" => $articlesCount,
+            "productsCount" => $productsCount,
+            "articleForm" => $articleForm,
+            "productForm" => $productForm
+        ]);
+    }
     #[Route('/users', name: 'app_admin_user_index', methods: ['GET'])]
     public function indexUsers(UserRepository $userRepository): Response
     {
@@ -55,40 +107,29 @@ class AdminController extends AbstractController
         ]);
     }
 
-    // #[Route('/edit/{id}', name: 'app_profile_edit', methods: ['GET', 'POST'])]
-    // public function edit(Request $request, User $user, UserRepository $userRepository): Response
-    // {
-    //     $currentUser = $this->getUser();
-    //     $userRoles = $currentUser->getRoles();
+    #[Route('/articles/{limit}/{author}', name: 'app_admin_articles')]
+    public function getArticles(ArticleRepository $articleRepository, $limit, $author)
+    {
+        $articles = $articleRepository->findBy(
+            ['authors' => [$author]],
+            ['createdAt' => 'DESC'],
+            $limit
+        );
+        // $articles = $articleRepository->findByCreatedDate($limit, $author);
 
-    //     if (in_array("ROLE_ADMIN", $userRoles)) {
-    //         $this->redirectToRoute('app_profile_edit', ['id' => $user->getId()], Response::HTTP_PERMANENTLY_REDIRECT);
-    //     }
+        return $this->render('admin/articles.html.twig', [
+            'articles' => $articles
+        ]);
+    }
 
-    //     $form = $this->createForm(ProfileType::class, $user);
-    //     $form->handleRequest($request);
+    #[Route('/products/{limit}/{seller}/{category}', name: 'app_admin_products')]
+    public function getProducts(ProductRepository $productRepository, $limit, $seller, $category)
+    {
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $isSeller = $form->get('isSeller')->getData();
+        $products = $productRepository->findByCreatedDate($limit, $seller, $category);
 
-    //         if ($isSeller && !in_array('ROLE_SELLER', $userRoles)) {
-    //             array_push($userRoles, 'ROLE_SELLER');
-    //         } elseif (!$isSeller && in_array('ROLE_SELLER', $userRoles)) {
-    //             if (($key = array_search('ROLE_SELLER', $userRoles)) !== false) {
-    //                 unset($userRoles[$key]);
-    //             }
-    //         }
-
-    //         $user->setRoles($userRoles);
-
-    //         $userRepository->save($currentUser, true);
-
-    //         return $this->redirectToRoute('app_profile_show', [], Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('profile/edit.html.twig', [
-    //         'user' => $currentUser,
-    //         'form' => $form,
-    //     ]);
-    // }
+        return $this->render('admin/products.html.twig', [
+            'products' => $products
+        ]);
+    }
 }

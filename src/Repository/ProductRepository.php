@@ -39,7 +39,8 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllAvailable($limit = null) {
+    public function findAllAvailable($limit = null)
+    {
         return $this->createQueryBuilder('p')
             ->andWhere('p.isPublished = :isPublished')
             ->setParameter('isPublished', true)
@@ -47,32 +48,47 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('availableQuantity', 0)
             ->setMaxResults($limit)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
+    public function findByCreatedDate(int $limit, int $seller = null, int $category = null): array
+    {
+        $qb = $this->createQueryBuilder('p');
 
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        if ($seller) {
+            $qb->andWhere('p.seller = :seller')
+                ->setParameter('seller', $seller);
+        }
+        if ($category) {
+            $qb->andWhere('p.category = :category')
+                ->setParameter('category', $category);
+        }
+        $qb->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults($limit);
 
-//    public function findOneBySomeField($value): ?Product
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $qb->getQuery()->getResult();
+    }
+    //    /**
+    //     * @return Product[] Returns an array of Product objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Product
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
