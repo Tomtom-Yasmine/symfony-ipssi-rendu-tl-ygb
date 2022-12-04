@@ -29,6 +29,7 @@ class Article
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'writtenArticles')]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private Collection $authors;
 
     #[ORM\Column]

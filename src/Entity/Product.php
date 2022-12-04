@@ -31,6 +31,7 @@ class Product
 
     #[ORM\ManyToOne(inversedBy: 'soldProducts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private ?User $seller = null;
 
     #[ORM\Column]
