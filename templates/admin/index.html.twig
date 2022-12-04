@@ -6,21 +6,22 @@
 {% block body %}
 	<div class="content_container">
 		<div class="product_block">
-		<p>Il y a un total de: <strong>{{ productsCount }}</strong> produits</p>
-		<h3>Filtrer:</h3>
+			<h3>Produits : {{ productsCount }}</h3>
 			{{ form_start(productForm) }}
 			{{ form_widget(productForm) }}
-			<button class="btn action_button">{{ button_label|default('Envoyer') }}</button>
+			<button class="btn action_button">{{ button_label|default('Afficher') }}</button>
 			{{ form_end(productForm) }}
 		</div>
-
         <div class="article_block">
-		<p>Il y a un total de: <strong>{{ articlesCount }}</strong> articles</p>
-		<h3>Filtrer:</h3>
+			<h3>Articles : {{ articlesCount }}</h3>
 			{{ form_start(articleForm) }}
 			{{ form_widget(articleForm) }}
-			<button class="btn action_button">{{ button_label|default('Envoyer') }}</button>
+			<button class="btn action_button">{{ button_label|default('Afficher') }}</button>
 			{{ form_end(articleForm) }}
+		</div>
+		<div class="user_block">
+			<h3>Utilisateurs : {{ usersCount }}</h3>
+			<a href="{{ path('app_admin_user_index') }}"><button class="btn action_button">Afficher</button></a>
 		</div>
 	</div>
 {% endblock %}
