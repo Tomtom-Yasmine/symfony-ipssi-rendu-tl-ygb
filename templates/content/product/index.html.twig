@@ -19,6 +19,7 @@
                                     <a href="{# path('app_category', {id: product.category.id}) #}">{{ product.category.name }}</a>
                                 </p>
                                 <h5 class="mt-0 font-weight-bold mb-2"><a href="path('app_product_show', {id: product.id})">{{ product.title }}</a></h5>
+                                <h6>Vendu par : {{ product.seller.firstname }} {{ product.seller.lastname }}</h6>
                                 <p class="font-italic text-muted mb-0 small">{{ product.colors|join(' | ') }}</p>
                                 <div class="d-flex align-items-center justify-content-between mt-1">
                                     <h6 class="font-weight-bold my-2">{{ product.price|format_currency('EUR') }}</h6>
